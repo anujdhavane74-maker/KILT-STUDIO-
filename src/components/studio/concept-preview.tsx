@@ -1,11 +1,13 @@
 import * as Dialog from '@radix-ui/react-dialog';
+import { useRef } from 'react';
 import { ArrowLeft, ArrowUpRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { conceptDetails, type ConceptId } from '@/lib/concept-projects';
 
 export function ConceptPreview({ id, onClose }: { id: ConceptId | null; onClose: () => void }) {
+  const opener = useRef<HTMLElement | null>(null);
   const project = id ? conceptDetails[id] : null;
-  return <Dialog.Root open={!!project} onOpenChange={open => { if (!open) onClose(); }}><Dialog.Portal><Dialog.Overlay className="concept-overlay" />{project && <Dialog.Content className={`concept-preview concept-${id}`}>
+  return <Dialog.Root open={!!project} onOpenChange={open => { if (!open) onClose(); }}><Dialog.Portal><Dialog.Overlay className="concept-overlay" />{project && <Dialog.Content className={`concept-preview concept-${id}`} onOpenAutoFocus={() => { opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null; }} onCloseAutoFocus={event => { event.preventDefault(); opener.current?.focus({ preventScroll: true }); }}>
     <div className="preview-toolbar"><Button variant="ghost" onClick={onClose}><ArrowLeft /> Back to portfolio</Button><span>CONCEPT PROJECT · KILT STUDIO</span><Dialog.Close asChild><Button variant="iconControl" size="icon" aria-label="Close concept preview"><X /></Button></Dialog.Close></div>
     <div className="preview-scroll"><Dialog.Title className="sr-only">{project.brand} — concept project preview</Dialog.Title><Dialog.Description className="preview-disclaimer">Self-initiated demo concept. Fictional brand and generated illustrative imagery — not a client project or operational business.</Dialog.Description>
       <div className="mini-nav"><strong>{project.brand}<span>®</span></strong><span>AN ORIGINAL KILT CONCEPT</span></div>

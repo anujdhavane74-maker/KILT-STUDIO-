@@ -85,6 +85,7 @@ img { max-width: 100%; }
 .icon-control { background: transparent; color: var(--foreground); border: 1px solid var(--border); border-radius: 4px; }
 .mobile-toggle { display: none; }
 .mobile-nav { padding: 8px 24px 24px; border-top: 1px solid var(--border); display: grid; gap: 18px; }
+.mobile-nav > a:not(.wordmark) { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 15px; padding: 8px 0; }
 .eyebrow { display: flex; align-items: center; gap: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0; }
 .eyebrow::before { content: ''; width: 7px; height: 7px; flex-shrink: 0; background: var(--primary); }
 .hero { position: relative; padding-top: 64px; overflow: hidden; }
