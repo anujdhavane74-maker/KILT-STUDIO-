@@ -17,6 +17,8 @@ The four portfolio mockups are fictional, self-initiated concepts, clearly label
 
 ## Checks
 
+Portfolio cards open accessible full-screen demo mini-sites (Escape or Back to portfolio closes them). Fictional menu/collection buttons scroll to their preview content; the project CTA closes the preview and opens KILT’s enquiry section. Images in these concepts and the social showcase are generated illustrations, never evidence of real clients or campaigns. The custom wordmark uses transparent vector geometry. The studio accent and dark background were sampled from the live Outskill page: #B8EF43 and #08090A; its imagery and branding were not reused. Founder uploads remain inaccessible; reattach Krishna first, Anuj second to add them.
+
 Run `bunx vitest run` for validation and route tests. Contact configuration never sends automatically; no credentials or backend are required.
 
 This project was built with [Lovable](https://lovable.dev).
