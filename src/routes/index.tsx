@@ -1,24 +1,81 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { ArrowUpRight, ArrowDown, ArrowUp, ArrowRight, Menu, X, Plus, Minus, Code2, Clapperboard, Megaphone, Check, Coffee, Store, Building2, Sparkles, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/studio/contact-form";
+import { studioConfig } from "@/lib/studio-config";
+import sculpture from "@/assets/kilt-sculpture.jpg";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({ meta: [
+    { title: "KILT STUDIO — Don't blend in. Kill it." },
+    { name: "description", content: "An independent creative digital studio in India. Web development, video editing and social media management for local brands ready to stand out." },
+    { property: "og:title", content: "KILT STUDIO — Don't blend in. Kill it." },
+    { property: "og:description", content: "Design. Develop. Disrupt. Original websites, sharp video edits and thoughtful social media for ambitious local businesses." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "/" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ], links: [{ rel: "canonical", href: "/" }] }),
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const navItems = ["Work", "Services", "About", "Process", "Contact"];
+const projects = [
+  { id: "cafe", title: "The café concept", category: "Hospitality", descriptor: "Web design · Brand direction", label: "Café" },
+  { id: "restaurant", title: "The restaurant concept", category: "Hospitality", descriptor: "Web design · Social direction", label: "Restaurant" },
+  { id: "retail", title: "The retail concept", category: "Retail", descriptor: "Web design · Visual identity", label: "Retail" },
+  { id: "estate", title: "The real estate concept", category: "Real estate", descriptor: "Web design · Digital experience", label: "Real estate" },
+];
+const services = [
+  { icon: Code2, title: "WEB DEVELOPMENT", intro: "Your business deserves more than a link in bio. We build a home for your brand that looks sharp and works hard.", items: ["Responsive business websites", "Campaign & launch landing pages", "Portfolio & service websites", "Clear navigation & enquiry flows"], cta: "Build your digital home" },
+  { icon: Clapperboard, title: "VIDEO EDITING", intro: "Stop the scroll. Start a connection. Edits with intention, rhythm and a story worth sticking around for.", items: ["Short-form reels & social edits", "Promotional brand videos", "Storytelling, pacing & sound", "Platform-ready video exports"], cta: "Make your next great edit" },
+  { icon: Megaphone, title: "SOCIAL MEDIA", intro: "Less last-minute posting. More brand presence. We bring a plan, a point of view and consistency to your feed.", items: ["Content strategy & planning", "Post & reel calendars", "Publishing coordination", "Social account management"], cta: "Give your brand a voice" },
+];
+const steps = [
+  ["Discover", "We get to know your business, your audience and what you want to do differently."],
+  ["Plan", "We align on the direction, deliverables and timeline. No guesswork. No surprises."],
+  ["Create", "We design, develop and edit, with you in the loop and space for considered feedback."],
+  ["Launch & Improve", "We bring it into the world, hand things over and agree on what comes next."],
+];
+const faqs = [
+  ["What exactly will I get?", "A clearly agreed set of deliverables, tailored to your brief. That could be a responsive website, edited reels and promotional videos, or a content calendar with publishing and account coordination. We confirm scope, formats, handover and revision rounds before work begins."],
+  ["How long does a project take?", "Timelines depend on scope, the content available and feedback rounds. A focused landing page and an ongoing social plan have different needs. After discovery, we share a realistic schedule and agree on milestones together."],
+  ["Are you a good fit for a small business?", "Absolutely. We focus on local shops, cafés, restaurants, real estate businesses and growing brands. You don’t need a giant brief or a giant team — just a business you care about and something you want to improve."],
+  ["Can I combine different services?", "Yes. Anuj leads web development, Krishna leads video editing, and both collaborate on social media. We can shape one connected project across your website, videos and social presence."],
+  ["How do we get started?", "Tell us about your business, choose a service and share your idea in the enquiry form below. It prepares a message you can send through a configured contact channel. We then discuss fit, scope and next steps before any commitment."],
+];
+
+function Wordmark() { return <a className="wordmark" href="#top" aria-label="KILT STUDIO home">KILT<span>✳</span><small>STUDIO</small></a>; }
+function Eyebrow({ children }: { children: React.ReactNode }) { return <div className="eyebrow">{children}</div>; }
+function BrowserBar() { return <div className="browser-bar" aria-hidden="true"><i /><i /><i /><span>Demo concept · KILT STUDIO</span></div>; }
+function ProjectArtwork({ kind }: { kind: string }) {
+  return <div className={`project-art ${kind}-art`} aria-hidden="true"><span className="concept-tag">Concept project</span><div className="browser-frame"><BrowserBar />
+    {kind === "cafe" && <div className="cafe-design"><div className="mock-nav"><strong>THE DAILY POUR.</strong><span>Our story &nbsp; Menu &nbsp; Visit us ↗</span></div><div className="cafe-orbit" /><h3>A little pause.<br />A better day.</h3><p>Good coffee. Slow mornings.<br />Your new favourite corner.</p><span className="mock-cta">Find your daily ritual ↗</span><div className="coffee-cup">THE<br />DAILY<br />POUR.</div></div>}
+    {kind === "restaurant" && <div className="restaurant-design"><div className="mock-nav"><strong>HOT TAKE®</strong><span>THE MENU &nbsp; OUR STORY &nbsp; BOOK A TABLE</span></div><h3>GOOD FOOD.<br />ZERO FILTER.</h3><p>BIG FLAVOURS.<br />BETTER COMPANY.</p><div className="pizza" /></div>}
+    {kind === "retail" && <div className="retail-design"><div className="mock-nav"><strong>OFFBEAT.</strong><span>COLLECTIONS &nbsp; ABOUT &nbsp; BAG (0)</span></div><h3>NOT FOR<br />EVERYONE.<br />JUST YOU.</h3><p>Everyday things. Unordinary energy.</p><span className="mock-cta">Find your thing ↗</span><div className="tote">OFF<br />BEAT.</div></div>}
+    {kind === "estate" && <div className="estate-design"><div className="mock-nav"><strong>FORM & SPACE</strong><span>Spaces &nbsp; Our approach &nbsp; Enquire ↗</span></div><h3>Room for<br />what’s next.</h3><p>Thoughtful spaces.<br />New perspectives.</p><span className="mock-cta">Explore the spaces ↗</span><div className="building" /></div>}
+  </div></div>;
+}
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [category, setCategory] = useState("All work");
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const filtered = projects.filter(p => category === "All work" || p.category === category);
+  return <>
+    <a className="skip-link" href="#main">Skip to content</a>
+    <div id="top" />
+    <header className="site-nav"><div className="container nav-inner"><Wordmark /><nav className="nav-links" aria-label="Main navigation">{navItems.map(item => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}</nav><Button variant="studio" className="nav-cta" asChild><a href="#contact">Let’s talk <ArrowUpRight /></a></Button><Button variant="iconControl" size="icon" className="mobile-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button></div>{menuOpen && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">{navItems.map(item => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)}>{item} <ArrowUpRight size={13} /></a>)}</nav>}</header>
+    <main id="main">
+      <section className="hero" aria-labelledby="hero-heading"><div className="container"><div className="hero-main"><Eyebrow>INDEPENDENT DIGITAL STUDIO</Eyebrow><div className="hero-art"><img src={sculpture} width={1024} height={1024} alt="Original lime and chrome sculptural KILT asterisk" fetchPriority="high" /><span className="art-label">DON’T BLEND IN.</span><span className="art-caption">DESIGN. DEVELOP. DISRUPT. / KILT STUDIO</span></div><h1 id="hero-heading"><span>WE MAKE BRANDS</span><span className="lime">IMPOSSIBLE</span><span>TO IGNORE<b className="lime">.</b></span></h1><p className="hero-copy">Bold websites. Scroll-stopping videos. Socials with a pulse.<br />We’re KILT STUDIO — a two-person creative crew turning local businesses into brands that stand out.</p><div className="hero-actions"><Button variant="studio" asChild><a href="#work">Explore our work <ArrowUpRight /></a></Button><Button variant="studioOutline" asChild><a href="#contact">Start a project <ArrowUpRight /></a></Button></div></div><div className="hero-bottom"><span><i className="status-dot" /> Two minds. One creative force.</span><span>BASED IN INDIA. BUILT FOR WHAT’S NEXT.</span><a href="#work">SCROLL TO EXPLORE <ArrowDown size={13} /></a></div></div></section>
+      <div className="sector-strip" aria-label="Industries we work with"><div className="container sector-inner"><span>LOCAL BRANDS</span><i>✳</i><span>HOSPITALITY</span><i>✳</i><span>RETAIL</span><i>✳</i><span>REAL ESTATE</span></div></div>
+      <section id="work" className="section"><div className="container"><Eyebrow>SELECTED CONCEPTS / 01</Eyebrow><div className="section-heading"><h2>LESS ORDINARY.<br /><span className="lime">MORE KILT.</span></h2><p>A glimpse of what’s possible. Original concepts for the businesses that make our neighbourhoods.</p></div><div className="filters" role="group" aria-label="Filter concept projects">{["All work", "Hospitality", "Retail", "Real estate"].map(filter => <Button variant="filter" key={filter} aria-pressed={category === filter} onClick={() => setCategory(filter)}>{filter}{filter === "All work" && <span>04</span>}</Button>)}</div><div className="project-grid" aria-live="polite">{filtered.map(project => <article className="project-card" key={project.id}><ProjectArtwork kind={project.id} /><div className="project-meta"><div><h3>{project.title}</h3><p>{project.descriptor}</p></div><span>{project.label}</span></div></article>)}</div><p className="portfolio-note"><Info size={13} /> All work above is self-initiated demo work. Brand names within mockups are fictional, not clients.</p></div></section>
+      <section id="services" className="section services-section"><div className="container"><Eyebrow>WHAT WE BRING / 02</Eyebrow><div className="section-heading"><h2>GOOD DESIGN.<br /><span className="lime">REAL IMPACT.</span></h2><p>Three ways to stand out. One studio that connects the dots.</p></div><div className="service-grid">{services.map((service, i) => <article className="service-card" key={service.title}><div className="service-top"><service.icon strokeWidth={1.5} /><span>0{i + 1}</span></div><h3>{service.title}</h3><p>{service.intro}</p><ul>{service.items.map(item => <li key={item}><Check />{item}</li>)}</ul><a href="#contact">{service.cta} <ArrowUpRight size={17} /></a></article>)}</div></div></section>
+      <section id="about" className="section"><div className="container about-layout"><div className="about-copy"><Eyebrow>THE PEOPLE BEHIND KILT / 03</Eyebrow><h2>TWO MINDS.<br />NO <span className="lime">TEMPLATES.</span></h2><p>We’re Anuj and Krishna. Two creators in India, one shared belief: a local business shouldn’t have to look like everyone else.</p><p>Anuj builds the digital experiences. Krishna brings stories to life through video. Together, we connect the web, the feed and everything in between.</p><p>No layers of account managers. No disappearing acts. Just you, us and a genuine obsession with making it good.</p><Button variant="studioOutline" asChild><a href="#contact">Meet your creative partners <ArrowUpRight /></a></Button></div><div className="founder-grid">{[{ key: "krishna" as const, name: "Krishna", initial: "K", role: "CO-FOUNDER / VIDEO EDITING", text: "The story. The rhythm. The perfect cut." }, { key: "anuj" as const, name: "Anuj", initial: "A", role: "CO-FOUNDER / WEB DEVELOPMENT", text: "The design. The code. The whole experience." }].map(founder => <article className="founder-card" key={founder.key}><div className="founder-portrait">{studioConfig.portraits[founder.key] ? <img src={studioConfig.portraits[founder.key]} alt={`${founder.name}, co-founder of KILT STUDIO`} loading="lazy" /> : <><span aria-hidden="true">{founder.initial}✳</span><small>PORTRAIT COMING SOON</small></>}</div><h3>{founder.name}</h3><p>{founder.role}<br />{founder.text}</p></article>)}</div></div></section>
+      <section id="process" className="section"><div className="container"><Eyebrow>HOW WE MAKE IT HAPPEN / 04</Eyebrow><div className="section-heading"><h2>BIG IDEAS.<br /><span className="lime">CLEAR PROCESS.</span></h2><p>Creative doesn’t have to mean complicated.<br />Here’s how we go from “what if” to “it’s live.”</p></div><div className="process-grid">{steps.map(([title, text], i) => <article className="process-step" key={title}><span className="step-num">0{i + 1}</span>{i < 3 && <ArrowRight size={18} />}<h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+      <section className="fit-section" aria-labelledby="fit-heading"><div className="container"><h2 id="fit-heading">SMALL BUSINESS.<br />BIG BRAND ENERGY.</h2><div className="fit-list"><span><Coffee strokeWidth={1.5} /> Cafés & restaurants</span><span><Store strokeWidth={1.5} /> Local shops & retailers</span><span><Building2 strokeWidth={1.5} /> Real estate teams</span><span><Sparkles strokeWidth={1.5} /> Brands ready to grow</span></div></div></section>
+      <section id="faq" className="section"><div className="container faq-layout"><div><Eyebrow>A FEW THINGS, ANSWERED / 05</Eyebrow><h2>GOOD<br /><span className="lime">QUESTIONS.</span></h2><p>Still curious about something?<br /><a href="#contact">Let’s talk it through <ArrowUpRight size={13} /></a></p></div><div className="faq-list">{faqs.map(([question, answer], i) => <div className="faq-item" key={question}><h3><Button variant="ghost" className="faq-question" aria-expanded={openFaq === i} aria-controls={`faq-panel-${i}`} id={`faq-trigger-${i}`} onClick={() => setOpenFaq(openFaq === i ? null : i)}>{question}{openFaq === i ? <Minus /> : <Plus />}</Button></h3><div id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-trigger-${i}`} hidden={openFaq !== i}><p className="faq-answer">{answer}</p></div></div>)}</div></div></section>
+      <section id="contact" className="section contact-section"><div className="container contact-layout"><div className="contact-copy"><Eyebrow>YOUR NEXT CHAPTER / 06</Eyebrow><h2>GOT A VISION?<br /><span className="lime">LET’S KILT IT.</span></h2><p>A new website. A better feed. That idea you’ve been sitting on. Tell us what you’re thinking — we’ll take it from there.</p><div className="contact-little"><span>✳</span><div><p>No big pitch needed. Just a conversation.</p><small>Independent studio · India</small></div></div></div><ContactForm /></div></section>
+    </main>
+    <footer className="site-footer"><div className="container"><div className="footer-top"><div className="footer-brand"><Wordmark /><p>Design. Develop. Disrupt.</p></div><nav className="footer-links" aria-label="Footer navigation">{navItems.map(item => <a key={item} href={`#${item.toLowerCase()}`}>{item}</a>)}</nav><div className="social-links">{studioConfig.socials.instagram && <a href={studioConfig.socials.instagram} target="_blank" rel="noreferrer">Instagram ↗</a>}{studioConfig.socials.linkedin && <a href={studioConfig.socials.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>}{!studioConfig.socials.instagram && !studioConfig.socials.linkedin && <span>SOCIAL LINKS COMING SOON</span>}</div></div><div className="footer-statement">DON’T BLEND IN. <span className="lime">KILL IT.</span></div><div className="footer-bottom"><span>© {new Date().getFullYear()} KILT STUDIO. All rights reserved.</span><a href="#top">BACK TO TOP <ArrowUp size={12} /></a></div></div></footer>
+  </>;
 }
