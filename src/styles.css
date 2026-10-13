@@ -29,7 +29,7 @@
 :root {
   --background: oklch(.155 .002 100);
   --foreground: oklch(.96 .008 100);
-  --primary: oklch(.922 .202 130.2);
+  --primary: oklch(.9236519 .1958621 130.22765);
   --primary-foreground: oklch(.155 .002 100);
   --secondary: oklch(.205 .002 100);
   --muted: oklch(.23 .002 100);
@@ -254,7 +254,7 @@ img { max-width: 100%; }
  .section { padding: 72px 0; } .section-heading { align-items: flex-start; } .section-heading > p { max-width: 235px; }
  .service-grid { grid-template-columns: 1fr; gap: 15px; } .service-card { padding: 25px; } .service-top { margin-bottom: 20px; } .service-card ul { grid-template-columns: 1fr 1fr; } .service-card h3 { font-size: 36px; }
  .about-layout { grid-template-columns: 1fr; } .about-copy > p { max-width: 560px; } .founder-grid { max-width: 550px; } .founder-portrait { aspect-ratio: .95; }
- .process-grid { grid-template-columns: 1fr 1fr; gap: 35px; } .fit-section .container { grid-template-columns: 1fr; gap: 30px; } .fit-section h2 br { display: none; }
+ .process-grid { grid-template-columns: 1fr 1fr; gap: 35px; } .fit-section .container { grid-template-columns: 1fr; gap: 30px; }
  .faq-layout { grid-template-columns: 1fr; gap: 35px; } .contact-layout { grid-template-columns: 1fr; gap: 40px; } .contact-copy h2 { font-size: 65px; } .contact-little { margin-top: 25px; max-width: 400px; }
  .footer-top { flex-wrap: wrap; } .footer-links { gap: 17px; } .footer-statement { font-size: 80px; }
  .browser-frame { width: 87%; } .cafe-design,.restaurant-design,.retail-design,.estate-design { padding: 10px 13px; } .cafe-design h3 { font-size: 27px; margin-top: 13px; } .coffee-cup { width: 66px; height: 80px; font-size: 9px; } .cafe-orbit { width: 150px; height: 150px; }
