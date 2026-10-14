@@ -9,5 +9,6 @@ describe("Project enquiry rules", () => {
   it("rejects invalid contact details", () => { expect(validateEnquiry({ ...valid, contact: "not-an-email" }).contact).toBeDefined(); });
   it("accepts an email", () => { expect(validateEnquiry(valid)).toEqual({}); });
   it("accepts a WhatsApp number", () => { expect(validateEnquiry({ ...valid, contact: "+91 98765 43210" })).toEqual({}); });
+  it("accepts AI Solutions & Automation service", () => { expect(validateEnquiry({ ...valid, service: "AI Solutions & Automation" })).toEqual({}); });
   it("keeps budget optional", () => { expect(validateEnquiry(valid).budget).toBeUndefined(); expect(enquiryText(valid)).toContain("Budget: Not specified"); });
 });

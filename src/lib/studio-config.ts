@@ -2,7 +2,7 @@
 export const studioConfig = {
   email: "",
   whatsapp: "", // International digits only, e.g. country code + number.
-  portraits: { krishna: "", anuj: "" }, // Asset URL, or /images/krishna.jpg.
+  portraits: { krishna: "", anuj: "", amit: "" }, // Asset URL, or /images/krishna.jpg.
   socials: { instagram: "", linkedin: "" },
 };
 
