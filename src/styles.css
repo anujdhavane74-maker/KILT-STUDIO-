@@ -131,7 +131,7 @@ img {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner {
-  height: 88px;
+  height: 72px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -254,15 +254,15 @@ img {
 }
 .hero {
   position: relative;
-  padding-top: 64px;
+  padding-top: clamp(18px, 2.5vh, 32px);
   overflow: hidden;
 }
 .hero-main {
   position: relative;
   display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.9fr);
   align-items: center;
-  gap: 48px;
+  gap: clamp(24px, 2.8vw, 38px);
 }
 .hero-content {
   position: relative;
@@ -274,9 +274,9 @@ img {
   position: relative;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 96px;
+  font-size: clamp(62px, 5.5vw, 84px);
   line-height: 0.94;
-  margin-top: 26px;
+  margin-top: 14px;
   pointer-events: none;
 }
 .hero-content h1 span {
@@ -295,7 +295,7 @@ img {
 .hero-3d-logo-wrapper {
   position: relative;
   width: 100%;
-  max-width: 540px;
+  max-width: 500px;
   aspect-ratio: 2172 / 724;
   display: flex;
   align-items: center;
@@ -326,18 +326,18 @@ img {
 .hero-copy {
   color: var(--muted-foreground);
   font-size: 13px;
-  line-height: 1.9;
-  max-width: 415px;
-  margin-top: 24px;
+  line-height: 1.7;
+  max-width: 430px;
+  margin-top: 16px;
 }
 .hero-actions {
   display: flex;
   gap: 12px;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 .hero-bottom {
-  margin-top: 58px;
-  padding: 23px 0;
+  margin-top: clamp(20px, 2.5vh, 30px);
+  padding: 13px 0;
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
@@ -364,7 +364,7 @@ img {
 .sector-strip {
   background: var(--primary);
   color: var(--primary-foreground);
-  padding: 23px 0;
+  padding: 13px 0;
   overflow: hidden;
 }
 .sector-inner {
@@ -374,7 +374,7 @@ img {
   gap: 24px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 24px;
+  font-size: clamp(16px, 1.5vw, 21px);
   white-space: nowrap;
 }
 .sector-inner i {
@@ -1258,16 +1258,16 @@ img {
 }
 @media (min-width: 1500px) {
   .hero {
-    padding-top: 78px;
+    padding-top: 32px;
   }
   .hero-main {
-    gap: 64px;
+    gap: 40px;
   }
   .hero-content h1 {
-    font-size: 114px;
+    font-size: 88px;
   }
   .hero-3d-logo-wrapper {
-    max-width: 620px;
+    max-width: 540px;
   }
 }
 @media (max-width: 1100px) {
@@ -1281,14 +1281,14 @@ img {
     gap: 20px;
   }
   .hero-main {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 32px;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
   }
   .hero-content h1 {
-    font-size: 80px;
+    font-size: 72px;
   }
   .hero-3d-logo-wrapper {
-    max-width: 480px;
+    max-width: 440px;
   }
   .section h2 {
     font-size: 55px;
