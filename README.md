@@ -9,7 +9,7 @@ Edit `src/lib/studio-config.ts` to add verified details:
 - **Email:** set `email` to the real studio inbox. After validation, the visitor can open a prefilled email; they must send it in their email app.
 - **WhatsApp:** set `whatsapp` to international digits only, without `+`, spaces or punctuation. The visitor opens a prefilled WhatsApp message and sends it there.
 - With both empty, the form explicitly says nothing is sent or stored. Visitors can prepare and copy their enquiry. No submission success is fabricated.
-- **Portraits:** first supplied image = Krishna, second = Anuj, third = Amit. No uploads were available at creation, so letter-based placeholders are shown. Add photos as `public/images/krishna.jpg`, `public/images/anuj.jpg`, and `public/images/amit.jpg`, then set portrait URLs in `src/lib/studio-config.ts`. For Lovable uploads, externalize with `lovable-assets` and use the returned pointer URL. Portraits are cropped with object-fit but no skin-tone alteration or filters.
+- **Portraits:** first supplied image = Krishna, second = Anuj, third = Amit. Add photos as `public/images/krishna.jpg`, `public/images/anuj.jpg`, and `public/images/amit.jpg`, then set portrait URLs in `src/lib/studio-config.ts`. Portraits are cropped with object-fit but no skin-tone alteration or filters.
 - **Socials:** add real absolute Instagram/LinkedIn profile URLs under `socials`. Empty values show “Social links coming soon”, not dead or invented links.
 - Budget choices are enquiry preferences, not advertised prices or quotations. Timelines are agreed after scoping.
 
@@ -20,16 +20,6 @@ The four portfolio mockups are fictional, self-initiated concepts, clearly label
 Portfolio cards open accessible full-screen demo mini-sites (Escape or Back to portfolio closes them). Fictional menu/collection buttons scroll to their preview content; the project CTA closes the preview and opens KILT’s enquiry section. Images in these concepts and the social showcase are generated illustrations, never evidence of real clients or campaigns. The custom wordmark uses transparent vector geometry. The studio accent and dark background were sampled from the live Outskill page: #B8EF43 and #08090A; its imagery and branding were not reused. Founder uploads remain inaccessible; attach Anuj, Krishna, and Amit photos to add them.
 
 Run `bunx vitest run` for validation and route tests. Contact configuration never sends automatically; no credentials or backend are required.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
