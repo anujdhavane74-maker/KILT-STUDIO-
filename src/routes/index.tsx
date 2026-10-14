@@ -32,23 +32,49 @@ import { HeroLogo } from "@/components/studio/hero-logo";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "KILT STUDIO — Don't blend in. Kill it." },
+      { title: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI" },
       {
         name: "description",
         content:
-          "An independent creative digital studio in India. Web development, video editing, social media management and AI solutions for local brands ready to stand out.",
+          "An independent creative digital studio in India. Custom web development, video editing, social media management, and practical AI solutions for ambitious businesses.",
       },
-      { property: "og:title", content: "KILT STUDIO — Don't blend in. Kill it." },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      { property: "og:site_name", content: "KILT STUDIO" },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_IN" },
+      { property: "og:url", content: "https://kilt-studios.vercel.app/" },
+      {
+        property: "og:title",
+        content: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI",
+      },
       {
         property: "og:description",
         content:
-          "Design. Develop. Disrupt. Original websites, sharp video edits, thoughtful social media and smart AI automations for ambitious local businesses.",
+          "An independent creative digital studio in India. Custom websites, high-impact video editing, social media management, and practical AI solutions for local brands.",
       },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:image", content: "https://kilt-studios.vercel.app/og-image.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "KILT STUDIO — Creative Digital Studio in India",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Custom websites, high-impact video editing, social media management, and practical AI workflows for ambitious brands.",
+      },
+      { name: "twitter:image", content: "https://kilt-studios.vercel.app/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://kilt-studios.vercel.app/" }],
   }),
   component: Index,
 });
@@ -180,7 +206,7 @@ const faqs = [
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <div className="eyebrow">{children}</div>;
 }
-function BrowserBar({ url = "Demo concept · KILT STUDIO" }: { url?: string }) {
+function BrowserBar({ url = "Demo concept · KILT STUDIO" }: { url?: string | undefined }) {
   return (
     <div className="browser-bar" aria-hidden="true">
       <i />
@@ -195,17 +221,17 @@ function ProjectArtwork({ project }: { project: PortfolioProject }) {
     !project.liveUrl &&
     (project.id === "restaurant" || project.id === "retail" || project.id === "estate");
   return (
-    <div className={`project-art ${project.id}-art`} aria-hidden="true">
+    <div className={`project-art ${project.id}-art`}>
       <img
         className="project-photo"
         src={project.backdropImage || project.previewImage}
-        alt=""
+        alt={`${project.title} — ${project.descriptor} by KILT STUDIO`}
         loading="lazy"
         width={1536}
         height={1024}
       />
       <span className="concept-tag">{project.badgeText || "Concept project"}</span>
-      <div className="browser-frame">
+      <div className="browser-frame" aria-hidden="true">
         <BrowserBar url={project.browserUrl} />
         {isCustomGraphic ? (
           <>
@@ -275,7 +301,7 @@ function ProjectArtwork({ project }: { project: PortfolioProject }) {
           <img
             className="browser-preview-img"
             src={project.previewImage}
-            alt=""
+            alt={`${project.title} — live website preview by KILT STUDIO`}
             loading="lazy"
             width={1440}
             height={960}
@@ -285,6 +311,38 @@ function ProjectArtwork({ project }: { project: PortfolioProject }) {
     </div>
   );
 }
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://kilt-studios.vercel.app/#organization",
+  name: "KILT STUDIO",
+  url: "https://kilt-studios.vercel.app/",
+  logo: "https://kilt-studios.vercel.app/og-image.jpg",
+  image: "https://kilt-studios.vercel.app/og-image.jpg",
+  description:
+    "An independent creative digital studio in India. Custom web development, video editing, social media management, and practical AI solutions for ambitious businesses.",
+  email: studioConfig.email,
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "IN",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "India",
+  },
+  knowsAbout: [
+    "Web Development",
+    "Video Editing",
+    "Social Media Management",
+    "AI Solutions & Automation",
+  ],
+  founder: founders.map((founder) => ({
+    "@type": "Person",
+    name: founder.name,
+    jobTitle: founder.role,
+  })),
+};
+
 function Index() {
   const [preview, setPreview] = useState<ConceptId | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -298,6 +356,10 @@ function Index() {
   );
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
