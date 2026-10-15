@@ -75,6 +75,21 @@ describe("SEO Suite - Metadata & Indexing", () => {
     const twitterCard = meta.find((m) => m.name === "twitter:card");
     expect(twitterCard?.content).toBe("summary_large_image");
   });
+
+  it("provides mobile theme-color and viewport metadata on the root route", () => {
+    const rootHead = RootRoute.options.head?.({} as never);
+    if (!rootHead || "then" in rootHead) {
+      throw new Error("Expected synchronous root head result");
+    }
+    const meta = (rootHead.meta ?? []) as MetaTag[];
+    const themeColor = meta.find((m) => m.name === "theme-color");
+    expect(themeColor).toBeDefined();
+    expect(themeColor?.content).toBe("#121316");
+
+    const viewport = meta.find((m) => m.name === "viewport");
+    expect(viewport).toBeDefined();
+    expect(viewport?.content).toBe("width=device-width, initial-scale=1");
+  });
 });
 
 describe("SEO Suite - Structured Data (JSON-LD)", () => {

@@ -60,6 +60,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
+  overflow-x: clip;
 }
 body {
   margin: 0;
@@ -68,6 +69,7 @@ body {
   font-family: var(--font-sans);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 ::selection {
   background: var(--primary);
@@ -223,6 +225,8 @@ img {
 }
 .mobile-toggle {
   display: none;
+  min-width: 44px;
+  min-height: 44px;
 }
 .mobile-nav {
   padding: 8px 24px 24px;
@@ -1356,6 +1360,10 @@ img {
   }
   .mobile-toggle {
     display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
   }
   .nav-cta {
     height: 38px;
@@ -1575,8 +1583,10 @@ img {
     padding: 0 11px;
   }
   .mobile-toggle {
-    width: 34px;
-    height: 35px;
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
   }
   .hero {
     padding-top: 35px;

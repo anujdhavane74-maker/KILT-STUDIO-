@@ -9,6 +9,7 @@ import {
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { AnalyticsTracker } from "@/components/studio/analytics";
 
 import appCss from "../styles.css?url";
 
@@ -78,6 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "theme-color", content: "#121316" },
       { property: "og:site_name", content: "KILT STUDIO" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -121,6 +123,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AnalyticsTracker />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
