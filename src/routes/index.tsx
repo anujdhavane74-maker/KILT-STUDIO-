@@ -32,11 +32,16 @@ import { HeroLogo } from "@/components/studio/hero-logo";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI" },
+      { title: "KILT STUDIO | Website Development & Digital Solutions in India" },
       {
         name: "description",
         content:
-          "An independent creative digital studio in India. Custom web development, video editing, social media management, and practical AI solutions for ambitious businesses.",
+          "KILT STUDIO builds modern websites, high-impact video, social media systems, and practical AI solutions for businesses and brands in India. Discuss your project.",
+      },
+      {
+        name: "keywords",
+        content:
+          "website development India, custom website design, web development studio, digital solutions India, responsive business websites, video editing studio, social media management, AI automation workflows",
       },
       {
         name: "robots",
@@ -52,29 +57,29 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://kilt-studios.vercel.app/" },
       {
         property: "og:title",
-        content: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI",
+        content: "KILT STUDIO | Website Development & Digital Solutions in India",
       },
       {
         property: "og:description",
         content:
-          "An independent creative digital studio in India. Custom websites, high-impact video editing, social media management, and practical AI solutions for local brands.",
+          "KILT STUDIO builds modern websites, high-impact video, social media systems, and practical AI solutions for businesses and brands in India. Discuss your project.",
       },
       { property: "og:image", content: "https://kilt-studios.vercel.app/og-image.jpg" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       {
         property: "og:image:alt",
-        content: "KILT STUDIO — Creative Digital Studio in India",
+        content: "KILT STUDIO — Website Development and Creative Digital Studio in India",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
         name: "twitter:title",
-        content: "KILT STUDIO — Creative Digital Studio in India | Web, Video & AI",
+        content: "KILT STUDIO | Website Development & Digital Solutions in India",
       },
       {
         name: "twitter:description",
         content:
-          "Custom websites, high-impact video editing, social media management, and practical AI workflows for ambitious brands.",
+          "Modern website development, video editing, social media management, and practical AI automation for ambitious brands in India.",
       },
       { name: "twitter:image", content: "https://kilt-studios.vercel.app/og-image.jpg" },
     ],
@@ -90,7 +95,7 @@ const services = [
     icon: Code2,
     title: "WEB DEVELOPMENT",
     intro:
-      "Your business deserves more than a link in bio. We build a home for your brand that looks sharp and works hard.",
+      "Your business deserves more than a link in bio. We build custom, responsive websites and digital platforms that look sharp, load fast, and convert visitors into clients.",
     items: [
       "Responsive business websites",
       "Campaign & launch landing pages",
@@ -103,7 +108,7 @@ const services = [
     icon: Clapperboard,
     title: "VIDEO EDITING",
     intro:
-      "Stop the scroll. Start a connection. Edits with intention, rhythm and a story worth sticking around for.",
+      "Stop the scroll. Start a connection. Edits with intention, rhythm, sound design, and a story worth sticking around for.",
     items: [
       "Short-form reels & social edits",
       "Promotional brand videos",
@@ -116,7 +121,7 @@ const services = [
     icon: Megaphone,
     title: "SOCIAL MEDIA",
     intro:
-      "Less last-minute posting. More brand presence. We bring a plan, a point of view and consistency to your feed.",
+      "Less last-minute posting. More brand presence. We bring a clear content plan, a strong visual point of view, and consistency to your feed.",
     items: [
       "Content strategy & planning",
       "Post & reel calendars",
@@ -129,7 +134,7 @@ const services = [
     icon: Bot,
     title: "AI SOLUTIONS",
     intro:
-      "Work smarter, respond faster. Custom AI assistants and automated workflows that handle routine tasks while you grow.",
+      "Work smarter, respond faster. Practical AI assistants and automated lead workflows that handle routine tasks while you focus on growing your business.",
     items: [
       "AI-powered customer assistants",
       "Workflow & lead automations",
@@ -315,36 +320,105 @@ function ProjectArtwork({ project }: { project: PortfolioProject }) {
     </div>
   );
 }
-const organizationSchema = {
+export const structuredData = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "https://kilt-studios.vercel.app/#organization",
-  name: "KILT STUDIO",
-  url: "https://kilt-studios.vercel.app/",
-  logo: "https://kilt-studios.vercel.app/og-image.jpg",
-  image: "https://kilt-studios.vercel.app/og-image.jpg",
-  description:
-    "An independent creative digital studio in India. Custom web development, video editing, social media management, and practical AI solutions for ambitious businesses.",
-  email: studioConfig.email,
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "IN",
-  },
-  areaServed: {
-    "@type": "Country",
-    name: "India",
-  },
-  knowsAbout: [
-    "Web Development",
-    "Video Editing",
-    "Social Media Management",
-    "AI Solutions & Automation",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://kilt-studios.vercel.app/#website",
+      url: "https://kilt-studios.vercel.app/",
+      name: "KILT STUDIO",
+      alternateName: ["Kilt Studio", "Kilt Studio India", "KILT STUDIO Digital"],
+      description:
+        "Independent website development and creative digital studio in India specializing in custom web design, video editing, social media management, and AI workflows.",
+      inLanguage: "en-IN",
+      publisher: {
+        "@id": "https://kilt-studios.vercel.app/#organization",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://kilt-studios.vercel.app/#organization",
+      name: "KILT STUDIO",
+      url: "https://kilt-studios.vercel.app/",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://kilt-studios.vercel.app/og-image.jpg",
+        width: 1200,
+        height: 630,
+      },
+      image: "https://kilt-studios.vercel.app/og-image.jpg",
+      description:
+        "KILT STUDIO is an independent creative digital studio in India founded by Anuj Dhavane, Krishna Patil, and Amit Suryawanshi, delivering custom website development, video production, social media management, and AI automation.",
+      email: studioConfig.email,
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "IN",
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "India",
+      },
+      knowsAbout: [
+        "Website Development",
+        "Custom Web Design",
+        "Responsive Web Applications",
+        "Video Editing",
+        "Visual Storytelling",
+        "Social Media Management",
+        "Content Strategy",
+        "AI Workflow Automation",
+        "Custom AI Assistants",
+      ],
+      founder: founders.map((founder) => ({
+        "@type": "Person",
+        name: founder.name,
+        jobTitle: founder.role,
+      })),
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Studio Digital Services",
+        itemListElement: [
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Website Development",
+              description:
+                "Custom responsive business websites, campaign landing pages, portfolio platforms, and high-performance web applications built with clean code and modern architecture.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Video Editing & Production",
+              description:
+                "High-impact short-form social reels, promotional brand videos, creative pacing, sound design, and platform-ready video deliverables.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Social Media Management",
+              description:
+                "Strategic content planning, weekly post and reel calendars, publishing coordination, and brand voice consistency.",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "AI Solutions & Automation",
+              description:
+                "Custom AI customer assistants, lead triage automation, social scheduling workflows, and tailored business AI integrations.",
+            },
+          },
+        ],
+      },
+    },
   ],
-  founder: founders.map((founder) => ({
-    "@type": "Person",
-    name: founder.name,
-    jobTitle: founder.role,
-  })),
 };
 
 function Index() {
@@ -362,7 +436,7 @@ function Index() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <a className="skip-link" href="#main">
         Skip to content
@@ -411,7 +485,7 @@ function Index() {
           <div className="container">
             <div className="hero-main">
               <div className="hero-content">
-                <Eyebrow>INDEPENDENT DIGITAL STUDIO</Eyebrow>
+                <Eyebrow>KILT STUDIO · INDEPENDENT DIGITAL STUDIO · INDIA</Eyebrow>
                 <h1 id="hero-heading">
                   <span>WE MAKE BRANDS</span>
                   <span className="lime">IMPOSSIBLE</span>
@@ -420,10 +494,12 @@ function Index() {
                   </span>
                 </h1>
                 <p className="hero-copy">
-                  Bold websites. Scroll-stopping videos. AI workflows. Socials with a pulse.
+                  Custom website development. High-impact video editing. Practical AI automation.
+                  Socials with a pulse.
                   <br />
-                  We’re KILT STUDIO — a three-person creative crew turning local businesses into
-                  brands that stand out.
+                  We’re KILT STUDIO — an independent creative digital studio in India partnering
+                  with local brands, cafés, retail, and real estate teams to build digital
+                  experiences that stand out.
                 </p>
                 <div className="hero-actions">
                   <Button variant="studio" asChild>
@@ -474,8 +550,8 @@ function Index() {
                 <span className="lime">MORE KILT.</span>
               </h2>
               <p>
-                A glimpse of what’s possible. Original concepts for the businesses that make our
-                neighbourhoods.
+                A glimpse of what’s possible. Original website development, brand concepts, and
+                digital experiences created for the businesses that shape our communities.
               </p>
             </div>
             <div className="filters" role="group" aria-label="Filter concept projects">
@@ -575,7 +651,10 @@ function Index() {
                 <br />
                 <span className="lime">REAL IMPACT.</span>
               </h2>
-              <p>Four ways to stand out. One studio that connects the dots.</p>
+              <p>
+                Four core digital services — web development, video editing, social media
+                management, and practical AI automation — built to work together seamlessly.
+              </p>
             </div>
             <div className="service-grid">
               {services.map((service, i) => (
@@ -682,7 +761,8 @@ function Index() {
               <p>
                 Creative doesn’t have to mean complicated.
                 <br />
-                Here’s how we go from “what if” to “it’s live.”
+                Here’s how we deliver custom websites, video edits, and automation workflows from
+                initial discovery to launch.
               </p>
             </div>
             <div className="process-grid">
@@ -776,8 +856,9 @@ function Index() {
                 <span className="lime">LET’S KILT IT.</span>
               </h2>
               <p>
-                A new website. A better feed. AI workflows. That idea you’ve been sitting on. Tell
-                us what you’re thinking — we’ll take it from there.
+                Whether you need a custom website, high-impact video edits, an AI assistant, or a
+                complete social revamp — tell us what you’re planning. We’ll discuss scope,
+                timeline, and next steps.
               </p>
               <div className="contact-little">
                 <span>✳</span>
