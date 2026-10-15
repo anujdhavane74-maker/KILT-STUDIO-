@@ -77,8 +77,12 @@ export function initGA(measurementId: string): boolean {
 
   // Set up dataLayer and gtag function
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
+  window.gtag = function gtag() {
+    // Google's tag loader strictly checks that queued commands are Arguments objects
+    // (Object.prototype.toString.call(a) === "[object Arguments]" or 'callee' in a).
+    // Pushing an Array causes the loader to ignore the commands as gtag API calls.
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer?.push(arguments);
   };
 
   // Configure timestamp and privacy-preserving settings

@@ -95,13 +95,14 @@ describe("Analytics Module - GA4 Validation & Privacy", () => {
       expect(script.src).toContain("https://www.googletagmanager.com/gtag/js?id=G-VALID12345");
       expect(script.async).toBe(true);
 
-      // Verify privacy settings in config call
+      // Verify privacy settings in config call (entries in dataLayer are Arguments objects)
       const configEntry = window.dataLayer?.find(
-        (entry) => Array.isArray(entry) && entry[0] === "config",
-      ) as unknown[];
+        (entry) =>
+          typeof entry === "object" && entry !== null && (entry as IArguments)[0] === "config",
+      ) as IArguments | undefined;
       expect(configEntry).toBeDefined();
-      expect(configEntry[1]).toBe("G-VALID12345");
-      expect(configEntry[2]).toEqual({
+      expect(configEntry?.[1]).toBe("G-VALID12345");
+      expect(configEntry?.[2]).toEqual({
         send_page_view: false,
         anonymize_ip: true,
         allow_google_signals: false,
@@ -112,6 +113,51 @@ describe("Analytics Module - GA4 Validation & Privacy", () => {
       const secondResult = initGA("G-VALID12345");
       expect(secondResult).toBe(true);
       expect(document.querySelectorAll("#ga4-gtag-script").length).toBe(1);
+    });
+
+    it("ensures queued gtag commands use standard Arguments objects for Google tag loader compatibility", () => {
+      // Regression test: Google's gtag.js parser specifically validates queued items with:
+      // Object.prototype.toString.call(a) === "[object Arguments]" || Object.prototype.hasOwnProperty.call(a, "callee")
+      // Pushing JavaScript arrays causes Google's tag loader to silently discard config and event commands.
+      initGA("G-VALID12345");
+      expect(window.dataLayer).toBeDefined();
+      expect(window.dataLayer!.length).toBe(2);
+
+      const isGoogleArguments = (a: unknown): boolean =>
+        Boolean(a) &&
+        (Object.prototype.toString.call(a) === "[object Arguments]" ||
+          Object.prototype.hasOwnProperty.call(a as object, "callee"));
+
+      // Check both 'js' and 'config' entries queued during initialization
+      for (const entry of window.dataLayer!) {
+        expect(Array.isArray(entry)).toBe(false);
+        expect(Object.prototype.toString.call(entry)).toBe("[object Arguments]");
+        expect(isGoogleArguments(entry)).toBe(true);
+      }
+
+      const jsEntry = window.dataLayer![0] as IArguments;
+      expect(jsEntry[0]).toBe("js");
+      expect(jsEntry[1]).toBeInstanceOf(Date);
+
+      const configEntry = window.dataLayer![1] as IArguments;
+      expect(configEntry[0]).toBe("config");
+      expect(configEntry[1]).toBe("G-VALID12345");
+
+      // Verify page_view event dispatch also queues standard Arguments
+      vi.stubEnv("VITE_GA_MEASUREMENT_ID", "G-VALID12345");
+      const tracked = trackPageView("/#work");
+      expect(tracked).toBe(true);
+      expect(window.dataLayer!.length).toBe(3);
+
+      const eventEntry = window.dataLayer![2] as IArguments;
+      expect(Array.isArray(eventEntry)).toBe(false);
+      expect(Object.prototype.toString.call(eventEntry)).toBe("[object Arguments]");
+      expect(isGoogleArguments(eventEntry)).toBe(true);
+      expect(eventEntry[0]).toBe("event");
+      expect(eventEntry[1]).toBe("page_view");
+      expect(eventEntry[2]).toMatchObject({
+        page_path: "/#work",
+      });
     });
   });
 
