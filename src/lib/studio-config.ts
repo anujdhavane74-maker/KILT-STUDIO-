@@ -1,8 +1,16 @@
+import anujPortrait from "@/assets/founders/anuj.jpg";
+import krishnaPortrait from "@/assets/founders/krishna.jpg";
+import amitPortrait from "@/assets/founders/amit.jpg";
+
 // Add only verified studio details. Empty values deliberately disable delivery.
 export const studioConfig = {
   email: "kiltstudio10@gmail.com",
   whatsapp: "", // International digits only, e.g. country code + number.
-  portraits: { krishna: "", anuj: "", amit: "" }, // Asset URL, or /images/krishna.jpg.
+  portraits: {
+    krishna: krishnaPortrait,
+    anuj: anujPortrait,
+    amit: amitPortrait,
+  },
   socials: { instagram: "", linkedin: "" },
 };
 

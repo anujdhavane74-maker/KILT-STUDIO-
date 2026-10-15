@@ -28,6 +28,7 @@ import { ConceptPreview } from "@/components/studio/concept-preview";
 import { SocialShowcase } from "@/components/studio/social-showcase";
 import { portfolioProjects, type PortfolioProject, type ConceptId } from "@/lib/concept-projects";
 import { HeroLogo } from "@/components/studio/hero-logo";
+import { TeamShowcase } from "@/components/studio/team-showcase";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -714,39 +715,7 @@ function Index() {
                 </Button>
               </div>
             </div>
-            <div className="founder-grid">
-              {founders.map((founder) => (
-                <article className="founder-card" key={founder.key}>
-                  <div className="founder-portrait">
-                    {studioConfig.portraits[founder.key] ? (
-                      <img
-                        src={studioConfig.portraits[founder.key]}
-                        alt={`${founder.name}, co-founder of KILT STUDIO`}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <>
-                        <span aria-hidden="true">{founder.initial}✳</span>
-                        <small>PORTRAIT COMING SOON</small>
-                      </>
-                    )}
-                  </div>
-                  <div className="founder-content">
-                    <h3>{founder.name}</h3>
-                    <span className="founder-role">{founder.role}</span>
-                    <p className="founder-text">{founder.tagline}</p>
-                    <ul className="founder-skills">
-                      {founder.skills.map((s) => (
-                        <li key={s}>
-                          <Check size={11} strokeWidth={2.5} />
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <TeamShowcase founders={founders} />
           </div>
         </section>
         <section id="process" className="section">
