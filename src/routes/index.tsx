@@ -482,7 +482,7 @@ function Index() {
       </header>
       <main id="main">
         <section className="hero" aria-labelledby="hero-heading">
-          <div className="container">
+          <div className="container hero-container">
             <div className="hero-main">
               <div className="hero-content">
                 <Eyebrow>KILT STUDIO · INDEPENDENT DIGITAL STUDIO · INDIA</Eyebrow>
@@ -528,18 +528,18 @@ function Index() {
               </a>
             </div>
           </div>
-        </section>
-        <div className="sector-strip" aria-label="Industries we work with">
-          <div className="container sector-inner">
-            <span>LOCAL BRANDS</span>
-            <i>✳</i>
-            <span>HOSPITALITY</span>
-            <i>✳</i>
-            <span>RETAIL</span>
-            <i>✳</i>
-            <span>REAL ESTATE</span>
+          <div className="sector-strip" aria-label="Industries we work with">
+            <div className="container sector-inner">
+              <span>LOCAL BRANDS</span>
+              <i>✳</i>
+              <span>HOSPITALITY</span>
+              <i>✳</i>
+              <span>RETAIL</span>
+              <i>✳</i>
+              <span>REAL ESTATE</span>
+            </div>
           </div>
-        </div>
+        </section>
         <section id="work" className="section">
           <div className="container">
             <Eyebrow>SELECTED CONCEPTS / 01</Eyebrow>
