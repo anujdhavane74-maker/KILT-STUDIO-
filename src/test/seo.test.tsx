@@ -76,7 +76,7 @@ describe("SEO Suite - Metadata & Indexing", () => {
     expect(twitterCard?.content).toBe("summary_large_image");
   });
 
-  it("provides mobile theme-color and viewport metadata on the root route", () => {
+  it("provides mobile theme-color, viewport, and Bing verification metadata on the root route", () => {
     const rootHead = RootRoute.options.head?.({} as never);
     if (!rootHead || "then" in rootHead) {
       throw new Error("Expected synchronous root head result");
@@ -89,6 +89,10 @@ describe("SEO Suite - Metadata & Indexing", () => {
     const viewport = meta.find((m) => m.name === "viewport");
     expect(viewport).toBeDefined();
     expect(viewport?.content).toBe("width=device-width, initial-scale=1");
+
+    const bingVerification = meta.find((m) => m.name === "msvalidate.01");
+    expect(bingVerification).toBeDefined();
+    expect(bingVerification?.content).toBe("917F4A78E1FAD7D11EA918AE407D169A");
   });
 });
 
