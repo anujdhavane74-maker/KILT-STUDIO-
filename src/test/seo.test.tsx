@@ -164,6 +164,33 @@ describe("SEO Suite - Crawler Directives & Sitemap", () => {
     expect(content).toContain("<loc>https://kilt-studios.vercel.app/</loc>");
     expect(content).toContain("<lastmod>");
   });
+
+  it("provides a valid, well-formed BingSiteAuth.xml file matching Bing's verification format", () => {
+    const authPath = path.resolve(process.cwd(), "public/BingSiteAuth.xml");
+    expect(fs.existsSync(authPath)).toBe(true);
+    const content = fs.readFileSync(authPath, "utf-8");
+
+    // Well-formed XML declaration
+    expect(content).toMatch(/^<\?xml version="1\.0"\?>/);
+
+    // Parse with DOMParser to validate strict XML structure
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(content, "application/xml");
+
+    // Ensure parser didn't produce a parsererror
+    const parserError = xmlDoc.querySelector("parsererror");
+    expect(parserError).toBeNull();
+
+    // Verify root node is <users>
+    expect(xmlDoc.documentElement.nodeName).toBe("users");
+
+    // Verify <user> child element and token
+    const userNodes = xmlDoc.documentElement.getElementsByTagName("user");
+    expect(userNodes.length).toBe(1);
+
+    const token = userNodes[0]?.textContent?.trim();
+    expect(token).toBe("917F4A78E1FAD7D11EA918AE407D169A");
+  });
 });
 
 describe("SEO Suite - Semantic DOM & Heading Hierarchy", () => {
