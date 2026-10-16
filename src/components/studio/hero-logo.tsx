@@ -133,3 +133,5 @@ export function HeroLogo() {
     </div>
   );
 }
+
+export { HeroShowcase } from "./hero-showcase";

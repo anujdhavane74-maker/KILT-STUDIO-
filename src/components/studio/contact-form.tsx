@@ -1,7 +1,34 @@
-import { useState, type FormEvent } from "react";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 import { ArrowUpRight, Check, Copy, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { studioConfig, validateEnquiry, enquiryText, type Enquiry } from "@/lib/studio-config";
+import {
+  studioConfig,
+  validateEnquiry,
+  enquiryText,
+  getWhatsAppUrl,
+  type Enquiry,
+} from "@/lib/studio-config";
+import { WhatsAppIcon } from "@/components/studio/whatsapp-icon";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: string | HTMLElement,
+        options: {
+          sitekey: string;
+          callback?: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+          theme?: "auto" | "light" | "dark";
+          size?: "normal" | "flexible" | "compact";
+        },
+      ) => string;
+      remove: (widgetId: string) => void;
+      reset: (widgetId?: string) => void;
+    };
+  }
+}
 
 export function ContactForm() {
   const [values, setValues] = useState<Enquiry>({
@@ -19,6 +46,64 @@ export function ContactForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
   const [honey, setHoney] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+
+  const turnstileSiteKey =
+    typeof window !== "undefined"
+      ? (import.meta.env["VITE_TURNSTILE_SITE_KEY"] as string | undefined)
+      : undefined;
+
+  // Cloudflare Turnstile progressive integration
+  useEffect(() => {
+    if (!turnstileSiteKey || !turnstileContainerRef.current) return;
+
+    let widgetId: string | undefined;
+
+    const renderTurnstile = () => {
+      if (window.turnstile && turnstileContainerRef.current) {
+        try {
+          widgetId = window.turnstile.render(turnstileContainerRef.current, {
+            sitekey: turnstileSiteKey,
+            callback: (token: string) => setTurnstileToken(token),
+            "expired-callback": () => setTurnstileToken(""),
+            "error-callback": () => setTurnstileToken(""),
+            theme: "dark",
+            size: "flexible",
+          });
+        } catch {
+          // ignore error if widget already attached
+        }
+      }
+    };
+
+    if (window.turnstile) {
+      renderTurnstile();
+    } else {
+      const scriptId = "cloudflare-turnstile-script";
+      if (!document.getElementById(scriptId)) {
+        const script = document.createElement("script");
+        script.id = scriptId;
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          if (window.turnstile) renderTurnstile();
+        };
+        document.head.appendChild(script);
+      }
+    }
+
+    return () => {
+      if (widgetId && window.turnstile) {
+        try {
+          window.turnstile.remove(widgetId);
+        } catch {
+          // ignore
+        }
+      }
+    };
+  }, [turnstileSiteKey]);
 
   const update = (key: keyof Enquiry, value: string) => {
     setValues((v) => ({ ...v, [key]: value }));
@@ -39,7 +124,7 @@ export function ContactForm() {
     event.preventDefault();
     if (status === "submitting") return;
 
-    // Honeypot spam protection: if filled, silently ignore bot submission
+    // Honeypot check: if filled by bot, silently claim success in UI
     if (honey.trim() !== "") {
       setStatus("success");
       return;
@@ -57,25 +142,18 @@ export function ContactForm() {
     setErrorMessage("");
 
     try {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const isEmail = emailRegex.test(values.contact.trim());
-
       const payload = {
         name: values.name.trim(),
         business: values.business.trim(),
-        email: isEmail ? values.contact.trim() : studioConfig.email,
         contact: values.contact.trim(),
         service: values.service,
         budget: values.budget || "Not specified",
-        message: values.details.trim(),
-        _subject: `New Project Enquiry: ${values.business || values.name} — KILT STUDIO`,
-        _template: "table",
-        _captcha: "false",
-        _honey: "",
+        details: values.details.trim(),
+        _honey: honey,
+        turnstileToken: turnstileToken || undefined,
       };
 
-      const endpoint = `https://formsubmit.co/ajax/${encodeURIComponent(studioConfig.email)}`;
-      const res = await fetch(endpoint, {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -84,27 +162,41 @@ export function ContactForm() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
+      const data = (await res.json().catch(() => ({}))) as {
+        success?: boolean | string;
+        activation?: boolean;
+        message?: string;
+        error?: string;
+      };
 
-      const data = (await res.json()) as { success?: string | boolean; message?: string };
+      if (!res.ok && res.status !== 200) {
+        if (res.status === 429) {
+          throw new Error(
+            data.error || "Too many enquiry attempts. Please wait a moment before trying again.",
+          );
+        }
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
 
       if (data.success === "true" || data.success === true) {
         setStatus("success");
       } else if (
-        typeof data.message === "string" &&
-        data.message.toLowerCase().includes("activation")
+        data.activation === true ||
+        (typeof data.message === "string" && data.message.toLowerCase().includes("activation"))
       ) {
         setStatus("activation");
       } else {
         setStatus("error");
-        setErrorMessage(data.message || "Submission was not accepted. Please try again.");
+        setErrorMessage(
+          data.error || data.message || "Submission was not accepted. Please try again.",
+        );
       }
-    } catch {
+    } catch (err: unknown) {
       setStatus("error");
+      const msg = err instanceof Error ? err.message : "";
       setErrorMessage(
-        "Unable to connect to email delivery service right now. Your details have been preserved below so you can retry or copy your enquiry.",
+        msg ||
+          "Unable to connect to email delivery service right now. Your details have been preserved below so you can retry or contact us directly on WhatsApp.",
       );
     }
   };
@@ -210,6 +302,15 @@ export function ContactForm() {
         )}
       </div>
 
+      {/* Cloudflare Turnstile human verification container (progressive enhancement) */}
+      {turnstileSiteKey && (
+        <div
+          ref={turnstileContainerRef}
+          className="turnstile-wrapper"
+          aria-label="Security check"
+        />
+      )}
+
       <Button
         variant="studio"
         size="lg"
@@ -228,6 +329,23 @@ export function ContactForm() {
           </>
         )}
       </Button>
+
+      {studioConfig.whatsapp && (
+        <div className="form-whatsapp-alternative">
+          <span>Prefer direct messaging?</span>{" "}
+          <a
+            href={getWhatsAppUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="form-whatsapp-link"
+            aria-label="Chat directly on WhatsApp (opens in new tab)"
+          >
+            <WhatsAppIcon size={14} aria-hidden="true" />
+            <span>Chat on WhatsApp</span>
+            <ArrowUpRight size={12} aria-hidden="true" />
+          </a>
+        </div>
+      )}
 
       <p className="privacy-note">
         We respect your privacy. Your information is only used by KILT STUDIO to review and respond
@@ -311,6 +429,20 @@ export function ContactForm() {
               <Button variant="studio" size="sm" type="submit">
                 Try again <ArrowUpRight size={14} />
               </Button>
+              {studioConfig.whatsapp && (
+                <Button variant="studio" size="sm" asChild>
+                  <a
+                    href={getWhatsAppUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Chat directly on WhatsApp (opens in new tab)"
+                  >
+                    <WhatsAppIcon size={14} aria-hidden="true" />
+                    <span>Chat on WhatsApp</span>
+                    <ArrowUpRight size={14} aria-hidden="true" />
+                  </a>
+                </Button>
+              )}
               <Button
                 variant="outline"
                 size="sm"

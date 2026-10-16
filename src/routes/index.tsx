@@ -19,15 +19,17 @@ import {
   Building2,
   Sparkles,
   Info,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/studio/contact-form";
-import { studioConfig } from "@/lib/studio-config";
+import { studioConfig, getWhatsAppUrl } from "@/lib/studio-config";
+import { WhatsAppIcon } from "@/components/studio/whatsapp-icon";
 import { Wordmark } from "@/components/studio/wordmark";
 import { ConceptPreview } from "@/components/studio/concept-preview";
 import { SocialShowcase } from "@/components/studio/social-showcase";
 import { portfolioProjects, type PortfolioProject, type ConceptId } from "@/lib/concept-projects";
-import { HeroLogo } from "@/components/studio/hero-logo";
+import { HeroShowcase } from "@/components/studio/hero-showcase";
 import { TeamShowcase } from "@/components/studio/team-showcase";
 
 export const Route = createFileRoute("/")({
@@ -516,7 +518,7 @@ function Index() {
                 </div>
               </div>
               <div className="hero-visual">
-                <HeroLogo />
+                <HeroShowcase />
               </div>
             </div>
             <div className="hero-bottom">
@@ -829,6 +831,68 @@ function Index() {
                 complete social revamp — tell us what you’re planning. We’ll discuss scope,
                 timeline, and next steps.
               </p>
+              <div className="contact-direct-box">
+                {studioConfig.whatsapp && (
+                  <div className="contact-direct-actions">
+                    <Button variant="studio" size="lg" className="whatsapp-cta-btn" asChild>
+                      <a
+                        href={getWhatsAppUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Chat on WhatsApp with KILT STUDIO (opens in new tab)"
+                      >
+                        <WhatsAppIcon className="whatsapp-btn-icon" aria-hidden="true" />
+                        <span>Chat on WhatsApp</span>
+                        <ArrowUpRight size={16} aria-hidden="true" />
+                      </a>
+                    </Button>
+                  </div>
+                )}
+                <div className="contact-direct-channels">
+                  {studioConfig.whatsapp && (
+                    <a
+                      href={getWhatsAppUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="direct-channel-card"
+                      aria-label="Chat on WhatsApp with KILT STUDIO (opens in new tab)"
+                    >
+                      <span className="channel-icon-wrap" aria-hidden="true">
+                        <WhatsAppIcon size={16} />
+                      </span>
+                      <div className="channel-details">
+                        <span className="channel-label">Direct WhatsApp</span>
+                        <span className="channel-value">Instant Project Chat</span>
+                      </div>
+                      <ArrowUpRight
+                        size={14}
+                        className="channel-external-icon"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  )}
+                  {studioConfig.email && (
+                    <a
+                      href={`mailto:${studioConfig.email}`}
+                      className="direct-channel-card"
+                      aria-label={`Direct email: ${studioConfig.email}`}
+                    >
+                      <span className="channel-icon-wrap" aria-hidden="true">
+                        <Mail size={16} />
+                      </span>
+                      <div className="channel-details">
+                        <span className="channel-label">Direct Email</span>
+                        <span className="channel-value">{studioConfig.email}</span>
+                      </div>
+                      <ArrowUpRight
+                        size={14}
+                        className="channel-external-icon"
+                        aria-hidden="true"
+                      />
+                    </a>
+                  )}
+                </div>
+              </div>
               <div className="contact-little">
                 <span>✳</span>
                 <div>

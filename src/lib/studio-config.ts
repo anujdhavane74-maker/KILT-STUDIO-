@@ -5,7 +5,10 @@ import amitPortrait from "@/assets/founders/amit.jpg";
 // Add only verified studio details. Empty values deliberately disable delivery.
 export const studioConfig = {
   email: "kiltstudio10@gmail.com",
-  whatsapp: "", // International digits only, e.g. country code + number.
+  whatsapp: "917387752527", // International digits only, e.g. country code + number.
+  whatsappDisplay: "+91 7387752527",
+  whatsappDefaultMessage:
+    "Hi KILT STUDIO! I'm interested in your digital services and would like to discuss a project. Could you please share more details?",
   portraits: {
     krishna: krishnaPortrait,
     anuj: anujPortrait,
@@ -13,6 +16,14 @@ export const studioConfig = {
   },
   socials: { instagram: "", linkedin: "" },
 };
+
+export function getWhatsAppUrl(customMessage?: string) {
+  const number = studioConfig.whatsapp.replace(/\D/g, "");
+  if (!number) return "";
+  const text = customMessage !== undefined ? customMessage : studioConfig.whatsappDefaultMessage;
+  if (!text) return `https://wa.me/${number}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+}
 
 export type Enquiry = {
   name: string;
